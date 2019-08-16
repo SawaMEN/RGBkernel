@@ -1,14 +1,14 @@
 #!/bin/bash
 
 KERNEL_DIR=$PWD
-#ANYKERNEL_DIR=$KERNEL_DIR/AnyKernel
+ANYKERNEL_DIR=$KERNEL_DIR/AnyKernel
 TOOLCHAINDIR=~/toolchain
 DATE=$(date +"%d%m%Y")
 KERNEL_NAME="RGBkernel"
 VER="-v1.2"
 FINAL_ZIP="$KERNEL_NAME""$VER".zip
 
-#rm $ANYKERNEL_DIR/Image.lz4-dtb
+rm $ANYKERNEL_DIR/Image.lz4-dtb
 rm $KERNEL_DIR/arch/arm64/boot/Image.lz4 $KERNEL_DIR/arch/arm64/boot/Image.lz4-dtb
 
 export ARCH=arm64
@@ -27,6 +27,6 @@ make clean && make mrproper
 make marlin_defconfig
 make -j$( nproc --all )
 
-#cp $KERNEL_DIR/arch/arm64/boot/Image.lz4-dtb $ANYKERNEL_DIR
-#cd $ANYKERNEL_DIR
-#zip -r9 $FINAL_ZIP * -x *.zip $FINAL_ZIP
+cp $KERNEL_DIR/arch/arm64/boot/Image.lz4-dtb $ANYKERNEL_DIR
+cd $ANYKERNEL_DIR
+zip -r9 $FINAL_ZIP * -x *.zip $FINAL_ZIP
