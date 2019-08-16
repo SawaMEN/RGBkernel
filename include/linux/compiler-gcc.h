@@ -5,9 +5,9 @@
 /*
  * Common definitions for all gcc versions go here.
  */
-#define GCC_VERSION (__GNUC__ * 10000 \
-		   + __GNUC_MINOR__ * 100 \
-		   + __GNUC_PATCHLEVEL__)
+#define GCC_VERSION (__GNUC__ * 10000		\
+		     + __GNUC_MINOR__ * 100	\
+		     + __GNUC_PATCHLEVEL__)
 
 /* Optimization barrier */
 
@@ -66,18 +66,22 @@
 
 /*
  * Force always-inline if the user requests it so via the .config,
- * or if gcc is too old:
+ * or if gcc is too old.
+ * GCC does not warn about unused static inline functions for
+ * -Wunused-function.  This turns out to avoid the need for complex #ifdef
+ * directives.  Suppress the warning in clang as well by using "unused"
+ * function attribute, which is redundant but not harmful for gcc.
  */
 #if !defined(CONFIG_ARCH_SUPPORTS_OPTIMIZED_INLINING) ||		\
     !defined(CONFIG_OPTIMIZE_INLINING) || (__GNUC__ < 4)
-#define inline		inline		__attribute__((always_inline)) notrace
-#define __inline__	__inline__	__attribute__((always_inline)) notrace
-#define __inline	__inline	__attribute__((always_inline)) notrace
+#define inline inline		__attribute__((always_inline,unused)) notrace
+#define __inline__ __inline__	__attribute__((always_inline,unused)) notrace
+#define __inline __inline	__attribute__((always_inline,unused)) notrace
 #else
 /* A lot of inline functions can cause havoc with function tracing */
-#define inline		inline		notrace
-#define __inline__	__inline__	notrace
-#define __inline	__inline	notrace
+#define inline inline		__attribute__((unused)) notrace
+#define __inline__ __inline__	__attribute__((unused)) notrace
+#define __inline __inline	__attribute__((unused)) notrace
 #endif
 
 #define __always_inline	inline __attribute__((always_inline))
@@ -114,13 +118,14 @@
  * would be.
  * [...]
  */
-#define __pure			__attribute__((pure))
-#define __aligned(x)		__attribute__((aligned(x)))
-#define __printf(a, b)		__attribute__((format(printf, a, b)))
-#define __scanf(a, b)		__attribute__((format(scanf, a, b)))
-#define __attribute_const__	__attribute__((__const__))
-#define __maybe_unused		__attribute__((unused))
-#define __always_unused		__attribute__((unused))
+#define __pure				__attribute__((pure))
+#define __aligned(x)			__attribute__((aligned(x)))
+#define __printf(a, b)			__attribute__((format(printf, a, b)))
+#define __scanf(a, b)			__attribute__((format(scanf, a, b)))
+#define  noinline			__attribute__((noinline))
+#define __attribute_const__		__attribute__((__const__))
+#define __maybe_unused			__attribute__((unused))
+#define __always_unused			__attribute__((unused))
 
 /* gcc version specific checks */
 
