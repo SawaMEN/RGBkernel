@@ -5,7 +5,7 @@ ANYKERNEL_DIR=$KERNEL_DIR/AnyKernel
 TOOLCHAINDIR=~/toolchain
 DATE=$(date +"%d%m%Y")
 KERNEL_NAME="RGBkernel"
-VER="-v1.2"
+VER="-v1.3"
 FINAL_ZIP="$KERNEL_NAME""$VER".zip
 
 rm $ANYKERNEL_DIR/Image.lz4-dtb
@@ -19,7 +19,6 @@ export CC=$TOOLCHAINDIR/linux-x86_64/bin/clang
 export CXX=$TOOLCHAINDIR/linux-x86_64/bin/clang++
 export CLANG_TRIPLE=aarch64-linux-gnu-
 export CROSS_COMPILE=$TOOLCHAINDIR/gcc-linaro-5.5.0-2017.10-x86_64_aarch64-linux-gnu/bin/aarch64-linux-gnu-
-#export CROSS_COMPILE_ARM32=$TOOLCHAINDIR/gcc-linaro-5.5.0-2017.10-x86_64_arm-linux-gnueabi/bin/arm-linux-gnueabi-
 export USE_CCACHE=1
 export CCACHE_DIR=../.ccache
 
