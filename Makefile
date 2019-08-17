@@ -638,6 +638,12 @@ KBUILD_CFLAGS   += $(call cc-disable-warning,attributes,)
 # Disable Wint-in-bool-context  warnings
 KBUILD_CFLAGS	+= $(call cc-disable-warning, int-in-bool-context)
 
+# Clang poses as GCC 4.2.1 but we want this warning enabled
+ifeq ($(cc-name),gcc)
+KBUILD_CFLAGS	+= $(call cc-ifversion, -le, 0409, \
+			$(call cc-disable-warning,maybe-uninitialized,))
+endif
+
 # Needed to unbreak GCC 7.x and above
 KBUILD_CFLAGS   += $(call cc-option,-fno-store-merging,)
 KBUILD_CFLAGS   += $(call cc-disable-warning,array-bounds)
